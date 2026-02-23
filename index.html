@@ -1,9 +1,13 @@
 <!doctype html>
-<html>
+<html lang="tr">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -12,70 +16,76 @@
         color: #ffffff;
         font-family: "Inter", sans-serif;
         margin: 0;
-        display: flex;
-        justify-content: center;
+        padding: 0;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
       .midas-app {
-        width: 375px;
-        height: 812px;
+        width: 100%;
+        min-height: 100vh;
         background: #000000;
-        padding: 20px;
-        box-sizing: border-box;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 120px;
       }
 
-      .nav-icons {
+      /* Üst Menü */
+      .header {
+        padding: 20px 20px 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
       }
       .nav-right {
         display: flex;
         gap: 20px;
       }
 
+      /* Hisse Bilgisi */
+      .stock-info {
+        padding: 0 20px;
+      }
       .stock-info h1 {
-        font-size: 22px;
-        font-weight: 600;
+        font-size: 24px;
+        font-weight: 700;
         margin: 0;
-        letter-spacing: -0.2px;
+        letter-spacing: -0.5px;
       }
       .stock-name {
         font-size: 14px;
         color: #8a8a8e;
-        margin: 4px 0 12px 0;
-        font-weight: 400;
+        margin: 4px 0 15px 0;
       }
       .price-container {
         display: flex;
         align-items: baseline;
-        gap: 6px;
-        margin-bottom: 30px;
+        gap: 8px;
       }
       .current-price {
-        font-size: 34px;
-        font-weight: 600;
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: -1px;
       }
       .percentage {
         color: #00d094;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 18px;
+        font-weight: 600;
       }
 
-      /* Grafik Çizgisi */
+      /* Grafik Alanı */
       .chart-area {
         width: 100%;
-        height: 180px;
-        margin-top: 25px;
+        height: 200px;
+        margin-top: 20px;
       }
       .chart-line {
         stroke: #00d094;
-        stroke-width: 2.2;
+        stroke-width: 2.5;
         fill: none;
         stroke-linecap: round;
         stroke-linejoin: round;
+        transition: d 0.5s ease-in-out;
       }
 
       /* Zaman Sekmeleri */
@@ -83,122 +93,184 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 35px;
-        padding: 0 5px;
+        padding: 15px 20px;
+        border-bottom: 0.2px solid #1c1c1e;
       }
       .tab {
         color: #8a8a8e;
         font-size: 13px;
-        font-weight: 600;
-        padding: 6px 10px;
+        font-weight: 700;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: 0.3s;
       }
       .tab.active {
         background: #1c1c1e;
         color: #ffffff;
-        border-radius: 6px;
       }
 
-      /* Senin istediğin o özel ikon */
-      .candlestick-icon {
-        width: 22px;
-        height: 22px;
-        background: #1c1c1e;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      /* İstatistikler */
+      .stats-section {
+        padding: 30px 20px;
       }
-
-      .stats-header {
-        font-size: 19px;
-        font-weight: 600;
-        margin: 45px 0 20px 0;
+      .stats-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 25px;
       }
       .stats-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 25px;
+        gap: 35px 20px;
+      }
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
       .stat-label {
         color: #8a8a8e;
-        font-size: 13px;
-        display: block;
-        margin-bottom: 3px;
-        font-weight: 400;
+        font-size: 14px;
       }
       .stat-val {
-        font-size: 15px;
-        font-weight: 500;
-      }
-      .more-link {
-        color: #767eff;
-        font-size: 14px;
-        font-weight: 500;
-        margin-top: 22px;
-        display: block;
+        font-size: 16px;
+        font-weight: 600;
       }
 
+      /* Sabit Al Butonu */
+      .fixed-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #000;
+        padding: 20px;
+        box-sizing: border-box;
+        z-index: 50;
+      }
       .buy-btn {
-        position: absolute;
-        bottom: 30px;
-        left: 20px;
-        right: 20px;
         background: #5c64ff;
         color: #ffffff;
         text-align: center;
+        padding: 18px;
+        border-radius: 24px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* ALIM EKRANI (MODAL) */
+      #buyModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 1000;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      #buyModal.active {
+        transform: translateY(0);
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        align-items: center;
+        border-bottom: 1px solid #1c1c1e;
+      }
+
+      .modal-body {
+        flex: 1;
+        padding: 40px 20px;
+      }
+      .input-display {
+        font-size: 48px;
+        font-weight: 400;
+        color: #fff;
+        min-height: 60px;
+        margin-top: 10px;
+        border-bottom: 1px solid #1c1c1e;
+        display: inline-block;
+        min-width: 50px;
+      }
+      .input-display:empty::before {
+        content: "0";
+        color: #303030;
+      }
+
+      .modal-footer {
+        background: #000;
+        padding-bottom: 20px;
+      }
+      .review-btn {
+        background: #262938;
+        color: #525566;
+        text-align: center;
         padding: 16px;
-        border-radius: 18px;
-        font-size: 16px;
-        font-weight: 600;
+        border-radius: 20px;
+        margin: 0 20px 20px 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .review-btn.ready {
+        background: #5c64ff;
+        color: #fff;
+      }
+      .keyboard {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        text-align: center;
+      }
+      .key {
+        padding: 18px;
+        font-size: 26px;
+        font-weight: 500;
+        color: #ffffff;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
     <div class="midas-app">
-      <div class="nav-icons">
+      <div class="header">
         <svg
-          width="22"
-          height="22"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="white"
-          stroke-width="1.8"
+          stroke-width="2.5"
         >
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         <div class="nav-right">
           <svg
-            width="20"
-            height="20"
+            width="22"
+            height="22"
             viewBox="0 0 24 24"
             fill="none"
             stroke="white"
-            stroke-width="1.8"
+            stroke-width="2"
           >
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
           </svg>
           <svg
-            width="20"
-            height="20"
+            width="22"
+            height="22"
             viewBox="0 0 24 24"
             fill="none"
             stroke="white"
-            stroke-width="1.8"
+            stroke-width="2"
           >
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
-          </svg>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            stroke-width="1.8"
-          >
-            <path
-              d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"
-            />
           </svg>
         </div>
       </div>
@@ -207,68 +279,213 @@
         <h1>OZDEBIR</h1>
         <p class="stock-name">Özdebir Eğitim Kurumları A.Ş.</p>
         <div class="price-container">
-          <span class="current-price">₺142,65</span>
-          <span class="percentage">%14,82</span>
+          <span class="current-price">₺75,20</span>
+          <span id="mainPercentage" class="percentage">%14,82</span>
         </div>
       </div>
 
       <div class="chart-area">
         <svg viewBox="0 0 300 100" style="width: 100%; height: 100%">
           <path
-            d="M0,45 L25,30 L50,40 L75,35 L100,65 L125,95 L150,85 L175,92 L200,88 L225,90 L250,85 L275,82 L300,80"
+            id="chartPath"
+            d="M0,40 L20,25 L40,35 L60,32 L80,55 L100,85 L120,80 L200,85 L250,82 L300,78"
             class="chart-line"
           />
-          <circle cx="300" cy="80" r="2.5" fill="#00D094" />
+          <circle id="chartDot" cx="300" cy="78" r="3" fill="#00D094" />
         </svg>
       </div>
 
       <div class="time-tabs">
-        <span class="tab active">1G</span>
-        <span class="tab">1H</span>
-        <span class="tab">1A</span>
-        <span class="tab">3A</span>
-        <span class="tab">1Y</span>
-        <span class="tab">5Y</span>
-        <div class="candlestick-icon">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#00D094"
-            stroke-width="2.5"
-          >
-            <line x1="6" y1="4" x2="6" y2="20" />
-            <line x1="12" y1="8" x2="12" y2="16" />
-            <line x1="18" y1="2" x2="18" y2="22" />
-          </svg>
+        <span
+          class="tab active"
+          onclick="
+            updateChart(
+              this,
+              'M0,40 L20,25 L40,35 L60,32 L80,55 L100,85 L120,80 L300,78',
+              78,
+              '%14,82',
+            )
+          "
+          >1G</span
+        >
+        <span
+          class="tab"
+          onclick="
+            updateChart(
+              this,
+              'M0,80 L50,70 L100,75 L150,40 L200,30 L250,45 L300,20',
+              20,
+              '%22,14',
+            )
+          "
+          >1H</span
+        >
+        <span
+          class="tab"
+          onclick="
+            updateChart(
+              this,
+              'M0,90 L60,85 L120,60 L180,70 L240,30 L300,10',
+              10,
+              '%48,50',
+            )
+          "
+          >1A</span
+        >
+        <span
+          class="tab"
+          onclick="
+            updateChart(this, 'M0,95 L100,80 L200,50 L300,5', 5, '%112,30')
+          "
+          >3A</span
+        >
+        <span
+          class="tab"
+          onclick="updateChart(this, 'M0,98 L150,60 L300,2', 2, '%340,15')"
+          >1Y</span
+        >
+      </div>
+
+      <div class="stats-section">
+        <div class="stats-title">İstatistikler</div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">Açılış</span
+            ><span class="stat-val">₺68,15</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Önceki Kapanış</span
+            ><span class="stat-val">₺65,48</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">En Yüksek</span
+            ><span class="stat-val">₺78,90</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">En Düşük</span
+            ><span class="stat-val">₺68,15</span>
+          </div>
         </div>
       </div>
 
-      <div class="stats-header">İstatistikler</div>
-
-      <div class="stats-grid">
-        <div class="stat-item">
-          <span class="stat-label">Açılış</span>
-          <span class="stat-val">₺124,25</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Önceki Kapanış</span>
-          <span class="stat-val">₺124,20</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">En Yüksek</span>
-          <span class="stat-val">₺145,80</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">En Düşük</span>
-          <span class="stat-val">₺124,25</span>
-        </div>
+      <div class="fixed-footer">
+        <div class="buy-btn" onclick="openBuy()">OZDEBIR al</div>
       </div>
-
-      <span class="more-link">Daha fazla göster</span>
-
-      <div class="buy-btn">OZDEBIR al</div>
     </div>
+
+    <div id="buyModal">
+      <div class="modal-header">
+        <span onclick="closeBuy()" style="padding: 10px; font-size: 24px"
+          >✕</span
+        >
+        <div style="text-align: center">
+          <h2 style="font-size: 16px; margin: 0">OZDEBIR Alış</h2>
+          <p style="font-size: 12px; color: #8a8a8e; margin: 2px 0 0 0">
+            Piyasa Fiyatı: ₺75,20
+          </p>
+        </div>
+        <span style="color: #5c64ff; font-weight: 700; font-size: 13px"
+          >Piyasa emri ▾</span
+        >
+      </div>
+
+      <div class="modal-body">
+        <div style="display: flex; justify-content: space-between">
+          <span style="color: #8a8a8e">Alınacak Adet</span
+          ><span style="color: #5c64ff; font-size: 24px">|</span>
+        </div>
+        <div id="qtyDisplay" class="input-display"></div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+          "
+        >
+          <span style="color: #8a8a8e; font-size: 14px"
+            >Tahmini Pay Tutarı</span
+          >
+          <span id="totalPrice" style="font-size: 18px; font-weight: 600"
+            >₺0,00</span
+          >
+        </div>
+        <div
+          style="
+            text-align: center;
+            margin-top: 60px;
+            font-size: 14px;
+            font-weight: 500;
+          "
+        >
+          ₺2,42 alım gücü
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div id="finalBtn" class="review-btn" onclick="prank()">
+          Emri gözden geçir
+        </div>
+        <div class="keyboard">
+          <div class="key" onclick="press(1)">1</div>
+          <div class="key" onclick="press(2)">2</div>
+          <div class="key" onclick="press(3)">3</div>
+          <div class="key" onclick="press(4)">4</div>
+          <div class="key" onclick="press(5)">5</div>
+          <div class="key" onclick="press(6)">6</div>
+          <div class="key" onclick="press(7)">7</div>
+          <div class="key" onclick="press(8)">8</div>
+          <div class="key" onclick="press(9)">9</div>
+          <div class="key"></div>
+          <div class="key" onclick="press(0)">0</div>
+          <div class="key" onclick="backspace()">⌫</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let qty = "";
+      const pricePerUnit = 75.2;
+
+      function updateChart(element, pathData, dotY, percent) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        element.classList.add("active");
+        document.getElementById("chartPath").setAttribute("d", pathData);
+        document.getElementById("chartDot").setAttribute("cy", dotY);
+        document.getElementById("mainPercentage").innerText = percent;
+      }
+
+      function press(num) {
+        qty += num;
+        updateUI();
+      }
+      function backspace() {
+        qty = qty.slice(0, -1);
+        updateUI();
+      }
+      function updateUI() {
+        document.getElementById("qtyDisplay").innerText = qty;
+        let total = (qty === "" ? 0 : parseInt(qty)) * pricePerUnit;
+        document.getElementById("totalPrice").innerText =
+          "₺" + total.toLocaleString("tr-TR", { minimumFractionDigits: 2 });
+
+        let btn = document.getElementById("finalBtn");
+        if (qty.length > 0) {
+          btn.classList.add("ready");
+        } else {
+          btn.classList.remove("ready");
+        }
+      }
+      function prank() {
+        if (qty.length > 0) alert("Amınakoyduğumun salağı seni :)");
+      }
+      function openBuy() {
+        document.getElementById("buyModal").classList.add("active");
+      }
+      function closeBuy() {
+        document.getElementById("buyModal").classList.remove("active");
+      }
+    </script>
   </body>
 </html>
