@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #000000;
+        color: #ffffff;
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        -webkit-font-smoothing: antialiased;
+      }
+      .midas-app {
+        width: 375px;
+        height: 812px;
+        background: #000000;
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+      }
+
+      .nav-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .nav-right {
+        display: flex;
+        gap: 20px;
+      }
+
+      .stock-info h1 {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: -0.2px;
+      }
+      .stock-name {
+        font-size: 14px;
+        color: #8a8a8e;
+        margin: 4px 0 12px 0;
+        font-weight: 400;
+      }
+      .price-container {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin-bottom: 30px;
+      }
+      .current-price {
+        font-size: 34px;
+        font-weight: 600;
+      }
+      .percentage {
+        color: #00d094;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      /* Grafik Çizgisi */
+      .chart-area {
+        width: 100%;
+        height: 180px;
+        margin-top: 25px;
+      }
+      .chart-line {
+        stroke: #00d094;
+        stroke-width: 2.2;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* Zaman Sekmeleri */
+      .time-tabs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 35px;
+        padding: 0 5px;
+      }
+      .tab {
+        color: #8a8a8e;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 10px;
+      }
+      .tab.active {
+        background: #1c1c1e;
+        color: #ffffff;
+        border-radius: 6px;
+      }
+
+      /* Senin istediğin o özel ikon */
+      .candlestick-icon {
+        width: 22px;
+        height: 22px;
+        background: #1c1c1e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .stats-header {
+        font-size: 19px;
+        font-weight: 600;
+        margin: 45px 0 20px 0;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+      }
+      .stat-label {
+        color: #8a8a8e;
+        font-size: 13px;
+        display: block;
+        margin-bottom: 3px;
+        font-weight: 400;
+      }
+      .stat-val {
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .more-link {
+        color: #767eff;
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 22px;
+        display: block;
+      }
+
+      .buy-btn {
+        position: absolute;
+        bottom: 30px;
+        left: 20px;
+        right: 20px;
+        background: #5c64ff;
+        color: #ffffff;
+        text-align: center;
+        padding: 16px;
+        border-radius: 18px;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="midas-app">
+      <div class="nav-icons">
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="1.8"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <div class="nav-right">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <path
+              d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div class="stock-info">
+        <h1>OZDEBIR</h1>
+        <p class="stock-name">Özdebir Eğitim Kurumları A.Ş.</p>
+        <div class="price-container">
+          <span class="current-price">₺142,65</span>
+          <span class="percentage">%14,82</span>
+        </div>
+      </div>
+
+      <div class="chart-area">
+        <svg viewBox="0 0 300 100" style="width: 100%; height: 100%">
+          <path
+            d="M0,45 L25,30 L50,40 L75,35 L100,65 L125,95 L150,85 L175,92 L200,88 L225,90 L250,85 L275,82 L300,80"
+            class="chart-line"
+          />
+          <circle cx="300" cy="80" r="2.5" fill="#00D094" />
+        </svg>
+      </div>
+
+      <div class="time-tabs">
+        <span class="tab active">1G</span>
+        <span class="tab">1H</span>
+        <span class="tab">1A</span>
+        <span class="tab">3A</span>
+        <span class="tab">1Y</span>
+        <span class="tab">5Y</span>
+        <div class="candlestick-icon">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#00D094"
+            stroke-width="2.5"
+          >
+            <line x1="6" y1="4" x2="6" y2="20" />
+            <line x1="12" y1="8" x2="12" y2="16" />
+            <line x1="18" y1="2" x2="18" y2="22" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="stats-header">İstatistikler</div>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Açılış</span>
+          <span class="stat-val">₺124,25</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Önceki Kapanış</span>
+          <span class="stat-val">₺124,20</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">En Yüksek</span>
+          <span class="stat-val">₺145,80</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">En Düşük</span>
+          <span class="stat-val">₺124,25</span>
+        </div>
+      </div>
+
+      <span class="more-link">Daha fazla göster</span>
+
+      <div class="buy-btn">OZDEBIR al</div>
+    </div>
+  </body>
+</html>
